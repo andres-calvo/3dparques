@@ -1,8 +1,30 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import { useRouter } from 'next/router';
+import useStore from '@/helpers/store';
+import { useEffect } from 'react';
+import Header from '@/config';
+import Dom from '@/components/layout/dom';
+import dynamic from 'next/dynamic';
+import "../styles/globals.css"
+const LCanvas = dynamic(() => import('@/components/layout/canvas'), {
+  ssr: false,
+});
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+function App({ Component, pageProps = { title: 'index' } }) {
+  const router = useRouter();
+
+  useEffect(() => {
+    useStore.setState({ router });
+  }, [router]);
+
+  return (
+    <>
+      <Header title={pageProps.title} />
+      <Dom>
+        <Component {...pageProps} />
+      </Dom>
+      {Component?.r3f && <LCanvas>{Component.r3f(pageProps)}</LCanvas>}
+    </>
+  );
 }
 
-export default MyApp
+export default App;
