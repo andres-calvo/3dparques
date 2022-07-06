@@ -1,0 +1,22 @@
+Subida
+	0 - 5
+	6 - 11
+	12 - 17
+	18 - 23
+	24 - 29 (Salida )
+
+Curva empieza en
+Posicion 30 - 35 Primera casilla
+	36 - 41  Segunda casilla
+	42 - 47 Tercera Casilla
+	48 - 53 Cuarta casilla
+	54 - 59 Quinta casilla
+	60 - 65 Sexta casilla
+
+Bajada
+
+	66 - 71 Primera  (Seguro)
+	72 - 77
+	78 - 83
+	84 - 89
+	90 - 95
