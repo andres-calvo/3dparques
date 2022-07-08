@@ -44,8 +44,8 @@ Page.r3f = (props) => (
   <>
     <ambientLight />
     <OrbitControls {...props} />
-    {[0,1,2,3,4,5].map(i =>  <Ficha  x={posicionInicial.x - posicionInicial.sizeX * i} y={-0.84} z={-0.0155}/>)}
-    {[0,1,2,3,4,5].map(i =>  <Ficha  x={posicionInicial.x - posicionInicial.sizeX * i} y={-0.84 + 0.058} z={-0.0155 + 0.02}/>)}
+    {[0,1,2,3,4,5].map(i =>  <Ficha key={i}  x={posicionInicial.x - posicionInicial.sizeX * i} y={-0.84} z={-0.0155}/>)}
+    {[0,1,2,3,4,5].map(i =>  <Ficha key={i}  x={posicionInicial.x - posicionInicial.sizeX * i} y={-0.84 + 0.058} z={-0.0155 + 0.02}/>)}
 
 
     <Scene />

@@ -1,0 +1,56 @@
+.page{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    border: 1px solid blue;
+    
+}
+
+.sectionWrapper{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: auto;
+    height: 100px;
+    gap: 1rem;
+    border: 1px solid red;
+    padding-right: 3rem;
+    div{
+        height: 100px;
+        width: 100px;
+        border: 1px solid green;
+        cursor: pointer;
+    }
+    button {
+        flex: 1;
+        max-width: 8rem;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        border: 1px solid #d4d4d4;
+        width: min-content;
+        background: rgb(65, 21, 208);
+        cursor: pointer;
+    }
+    button:disabled{
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+}
+.dadosWrapper{
+    position: fixed;
+    top: 0;
+    right: 0;
+    border: 1px solid green;
+    .dado{
+        width: 50px;
+        height: 50px;
+        border: 1px solid #d4d4d4;
+        box-shadow: 1px 2px #d4d4d4;
+        border-radius: 0.5rem;
+        cursor: pointer;
+    }
+    .dado:disabled{
+        cursor: not-allowed;
+    }
+}
