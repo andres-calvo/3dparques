@@ -166,7 +166,7 @@ class Jugador {
   volverTirar=false
   ronda = 0;
   cantidadPares = 0;
-  fichas = [];
+  fichas:Ficha[] = [];
   estadoSoplar = false;
   constructor(nombre, numeroFichas, color, valorDado) {
     this.nombre = nombre;
@@ -196,17 +196,44 @@ class Jugador {
   girarDados(): Array<{ id: string; valor: number }> {
     this.dadoUno = Math.floor(Math.random() * (6 - 1) + 1);
     this.dadoDos = Math.floor(Math.random() * (6 - 1) + 1);
-    this.ronda = this.ronda + 1;
+    // this.ronda = this.ronda + 1;
 
     if (this.dadoUno == this.dadoDos) {
       for (let i = 0; i < this.fichas.length; i++) {
         if (this.fichas[i].estado == 'Carcel') {
           this.fichas[i].estado = 'Libre';
-          this.fichas[i].posicion = 0;
+
+          switch (this.colorFicha) {
+            case 'Rojo':
+              this.fichas[i].posicion =  54
+              break;
+            case 'Azul':
+              this.fichas[i].posicion =  71
+              break;
+            case 'Verde':
+              this.fichas[i].posicion =  38
+              break;
+      
+            case 'Naranja':
+              this.fichas[i].posicion =  21
+              break;
+      
+            case 'Morado':
+              this.fichas[i].posicion =  4
+              break;
+      
+            case 'Amarillo':
+              this.fichas[i].posicion =  88
+              break;
+          }
+
+          
           break;
         }
       }
     }
+
+    
     let valor1 = this.dadoUno;
     let valor2 = this.dadoDos;
     let valor3 = this.dadoUno + this.dadoDos;
@@ -275,7 +302,7 @@ class Jugador {
       if (this.dadoUno === this.dadoDos) {
         this.asignarFichas(this.numeroFichas);
         this.puedeJugar = true;
-        this.ronda = this.ronda + 1;
+        // this.ronda = this.ronda + 1;
         this.fichasLibres = 4;
         this.fichasEnjauladas = 0;
         for (let j = 0; j < this.fichas.length; j++) {
@@ -301,17 +328,41 @@ class Jugador {
       this.girarDados();
     }
   }
+
+
+
 }
+
+
+// function Mover(ficha,valor){
+
+// }
+
 
 class Ficha {
   posicion = null;
   estado = null;
   jugador = null;
+  id=null;
   constructor(posicion, estado, jugador) {
     this.posicion = posicion;
     this.estado = estado;
     this.jugador = jugador;
+    this.id=uuidv4()
   }
+
+
+  // mover (valor) {
+  //   this.posicion= (this.posicion+valor ) % 100
+
+  //   return this.posicion
+
+
+  // }
+
+
+
+
 
   // set posicion(posicionFicha){
 

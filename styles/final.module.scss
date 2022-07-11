@@ -1,0 +1,33 @@
+.header {
+    display: flex;
+    flex-direction: column;
+}
+.fichasWrapper{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 2rem;
+    margin-top: 1rem;
+    div {
+        cursor: pointer;
+        border-radius: 0.25rem;
+        padding: 1rem 2rem;
+        &[data-selected="true"]{
+            border: 5px solid blue;
+        }
+    }
+}
+.buttonsWrapper{
+    position: fixed;
+    display: flex;
+    justify-content: flex-end;
+    gap: 2rem;
+    bottom: 0;
+    width: 100vw;
+    height: 6rem;
+    padding-right: 2rem;
+    button {
+        border-radius: 1rem;
+        padding: 1rem;
+    }
+}

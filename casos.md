@@ -31,14 +31,39 @@
     4.3 Si le da click a matar y no hay nada para matar: Mostrar modal diciendo que no puede matar a nadie y pasar turno automaticamente
 
 
-5.Soplar:
+5. Soplar:
         Se deben mostrar los jugadores, luego hacer click al jugador que quiere soplar, si al validar que el jugador que selecciono el estado de
         puedesoplar = True entonces a ese jugador le envia una ficha a la carcel
 
         Si el jugador que selecciono no tiene activo el campo puedesoplar, entonces mostrar modal que diga "No sea imbecil juegue bien" y pasar turno automaticamente
 
     
+
+// Descripcion de como debe jugar,despues de haber sacado las fichas
+
+Turno Jugador cero
+
+1. Gira dados
+    Deshabilitar botones Girar dado y pasar turno
+    1.1 Puede moverse ?
+    Aparecen los dados, pero deshabilitados
+    Esperar a que el jugador seleccione una ficha. Luego activar dados
+    Click en un dado
+    Mover la ficha seleccionada x Casillas
+    1.1.1 Quedan movimientos por realizar?
+        Quitar de la pantalla dado anterior escogido y el dado resultante de la suma
+        Deshabilitar dado
+        Esperar a que el jugador seleccione una ficha y moverla automaticamente X casillas
+
+    1.1.2 Saco par?
+        Habilitar boton de girar dado
+        Break
     
+
+
+
+
+
 
 
 [5,5,10]
