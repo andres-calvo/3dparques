@@ -12,7 +12,7 @@ export const POSICIONES_GANADORAS = {
     Rojo: 49,
     Verde: 33,
     Naranja: 16,
-    Amarillo: 83,
+    Amarillo: 84,
     Azul: 66,
   };
 

@@ -8,9 +8,10 @@ import { useGLTF } from '@react-three/drei'
 export default function Model({ x,y,z,...props}) {
   const group = useRef()
   const { nodes, materials } = useGLTF('/ficha.glb')
+  console.log(materials)
   return (
     <group ref={group} {...props} dispose={null}>
-      <mesh geometry={nodes.Fichas.geometry} material={materials.FichaMaterial} position={[x, z, y*-1]} />
+      <mesh geometry={nodes.Fichas.geometry}  color={"rgb(10, 20, 30)"} position={[x, z, y]} />
     </group>
   )
 }
