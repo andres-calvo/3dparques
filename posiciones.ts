@@ -1,4 +1,0 @@
-const PosicionesEscaleras = []
-
-function ()
-export {}

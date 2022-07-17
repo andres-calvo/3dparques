@@ -3,6 +3,7 @@ import create from 'zustand';
 import { Ficha } from './logic/claseFicha';
 import { Jugador } from './logic/claseJugador';
 import { Tablero } from './logic/claseTablero';
+import { POSICIONES_SALIDA, POSICION_CARCEL } from './logic/constantes';
 import { mostrarMovimiento, matarJugador } from './logic/funcionalidades';
 
 const defaultAccionesPosibles = {
@@ -28,6 +29,8 @@ interface StoreInterface {
   pasarTurno: () => void;
   girarDados: () => void;
   matarJugador: () => void;
+  moverFicha: (mov: number) => void;
+  soplarJugada: (jugadorSoplado: Jugador) => void;
 }
 export const useGameStore = create<StoreInterface>((set, get) => ({
   dados: [],
@@ -50,10 +53,13 @@ export const useGameStore = create<StoreInterface>((set, get) => ({
 
     jugadoresPosibles.forEach((currentPlayer) => {
       currentPlayer.fichas.forEach((ficha) => {
-        if (posicionesKiller.includes(ficha.posicion)) {
+        const estaEnSuSalida =POSICIONES_SALIDA[ficha.jugador.colorFicha] == ficha.posicion
+        if (posicionesKiller.includes(ficha.posicion) && !estaEnSuSalida) {
           //Valido si el jugador en la posicion i tiene alguna ficha en la una misma posicion de alguna ficha del jugador que quiere matar
           ficha.estado = 'Carcel'; //Si existe alguna, luego esa ficha se convierte en el estado de "Carcel" es decir la mata
           banderaError = false;
+          ficha.posicion = POSICION_CARCEL
+          ficha.actualizarXYZ()
         }
       });
     });
@@ -119,7 +125,47 @@ export const useGameStore = create<StoreInterface>((set, get) => ({
   },
   seleccionarFicha: (ficha) => {
     set({ fichaActual: ficha });
+    if (!ficha) {
+      set({ movimientosPosibles: [] });
+      return;
+    }
     get().setMovimientosPosibles(ficha);
+  },
+  moverFicha: (mov) => {
+    const { dados, fichaActual, setMovimientosPosibles, instanciaJugadorActual, setAccionPosible } =
+      get();
+    fichaActual.posicion += mov;
+    fichaActual.actualizarXYZ();
+    const anteriorDadosFueronPar = dados[0].valor == dados[1].valor
+
+    set({ fichaActual: null });
+    if (mov === dados[2].valor) {
+      // dado2 es la suma de dado0 + dado1
+      set({ dados: [] });
+      setMovimientosPosibles(fichaActual);
+      setAccionPosible('pasarDeTurno', !anteriorDadosFueronPar);
+      return;
+    }
+    let encontrado = false; // En caso de que los dados sean 5,5,10 y el movimiento sea 5, modificaremos el primero encontrado
+    const newDados = dados.map((dado) => {
+      const newDado = { ...dado }; // Creamos una nueva referencia clonando los valores del dado
+      if (dado.valor == mov && !encontrado) {
+        encontrado = true;
+        newDado.valor = 0;
+      }
+      return newDado;
+    });
+    newDados[2].valor = newDados[0].valor + newDados[1].valor;
+    set({ dados: newDados });
+    setMovimientosPosibles(fichaActual);
+    const movimientosPosiblesFichas = instanciaJugadorActual.fichas.map((ficha) =>
+      mostrarMovimiento(ficha, [newDados[0].valor, newDados[1].valor, newDados[2].valor])
+    );
+    if (movimientosPosiblesFichas.flat().length == 0 ) {
+      setAccionPosible('pasarDeTurno', !anteriorDadosFueronPar);
+      setAccionPosible("girarDados",anteriorDadosFueronPar)
+    }
+    
   },
   setAccionPosible: (accion, state) => {
     set((prev) => ({ ...prev, accionesPosibles: { ...prev.accionesPosibles, [accion]: state } }));
@@ -130,6 +176,8 @@ export const useGameStore = create<StoreInterface>((set, get) => ({
       let ficha = jugadorSoplado.fichas.find((ficha) => ficha.estado == 'Libre');
       if (ficha) {
         ficha.estado = 'Carcel';
+        ficha.posicion = -1;
+        ficha.actualizarXYZ();
       }
     }
   },

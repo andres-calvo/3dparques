@@ -7,24 +7,21 @@ import withReactContent from 'sweetalert2-react-content';
 import { OrbitControls } from '@react-three/drei';
 import { useLoader } from '@react-three/fiber';
 import { GLTFLoader } from 'three-stdlib';
-import {FichaAmarilla,FichaAzul,FichaMorada,FichaNaranja,FichaRoja,FichaVerde} from '../Ficha';
-import carcelJson from '../carcel.json';
-
+import Ficha from '../src/components/Ficha';
 const Final = () => {
   const store = useGameStore();
   useEffect(() => {
     store.setInstanciaJuego(Main(4, 3));
-    // Swal.close();
-    // Swal.fire(
-    //   'Bienvenido al juego',
-    //   'Presiona girar dados para intentar sacar tus fichas de la carcel',
-    //   'info'
-    // );
+    Swal.close();
+    Swal.fire(
+      'Bienvenido al juego',
+      'Presiona girar dados para intentar sacar tus fichas de la carcel',
+      'info'
+    );
   }, []);
   return (
     <div>
       <Header />
-      {/* <Fichas /> */}
       <MovimientosPosibles />
       <Buttons />
       {/* <ModalJugadores /> */}
@@ -42,37 +39,30 @@ const Scene = () => {
 Final.r3f = (props) => (
   <>
     <ambientLight />
-    <OrbitControls />
-    <FichasRenderer />
-    <Scene />
+      <OrbitControls  maxDistance={2} minDistance={0.7} maxPolarAngle={Math.PI/2} />
+      <FichasRenderer />
+      <Scene />
   </>
 );
-const FichasToggle = {
-  Rojo: FichaRoja,
-  Morado: FichaMorada,
-  Amarillo: FichaAmarilla,
-  Verde: FichaVerde,
-  Azul: FichaAzul,
-  Naranja: FichaNaranja,
-}
+
 const FichasRenderer = () => {
-  const { instanciaJuego } = useGameStore();
+  const { instanciaJuego,seleccionarFicha } = useGameStore();
   const cantidadJugadores = instanciaJuego.jugadores;
+
   return (
     <>
       {cantidadJugadores.map((player) => {
         console.log(player.colorFicha);
-        const carcel = carcelJson[player.colorFicha];
-        const Ficha = FichasToggle[player.colorFicha]
         return (
-          <Fragment key={player.nombre}>
+          <Fragment key={player.colorFicha}>
             {player.fichas.map((f, i) => (
               <Ficha
-                x={carcel[i].x}
-                y={carcel[i].z}
-                z={carcel[i].y}
+                x={f.x}
+                y={f.z }
+                z={f.y * -1} // Al exportar de blender la Y salio invertida
                 color={getHexColor[player.colorFicha]}
                 key={f.id}
+                onClick={()=>seleccionarFicha(f)}
               />
             ))}
           </Fragment>
@@ -88,7 +78,7 @@ const Header = () => {
   const instanciaJugador = useGameStore((state) => state.instanciaJugadorActual);
   return (
     <section className={styles.header}>
-      <div>El jugador actual es {instanciaJugador?.nombre}</div>
+      <div>El jugador actual es {instanciaJugador?.colorFicha}</div>
       <div>Cantidad de fichas {instanciaJugador?.fichas.length}</div>
       <div>Cantidad de fichas fichasEnjauladas {instanciaJugador?.fichasEnjauladas}</div>
     </section>
@@ -117,40 +107,24 @@ const Buttons = () => {
   );
 };
 
-const Fichas = () => {
-  const { seleccionarFicha, instanciaJugadorActual, fichaActual } = useGameStore();
-  return (
-    <div className={styles.fichasWrapper}>
-      {instanciaJugadorActual?.fichas.map((ficha) => (
-        <div
-          key={ficha.id}
-          onClick={() => seleccionarFicha(ficha)}
-          style={{ background: getHexColor[instanciaJugadorActual.colorFicha] }}
-          data-selected={fichaActual == ficha}
-        >
-          <p>Id : {ficha.id}</p>
-          <p>Posicion : {ficha.posicion}</p>
-        </div>
-      ))}
-    </div>
-  );
-};
-
 const MovimientosPosibles = () => {
   const movimientos = useGameStore((state) => state.movimientosPosibles);
-  const seleccionarFicha = useGameStore((state) => state.seleccionarFicha);
-  // useEffect(() => {
-  //   if(movimientos.length == 0){
-  //     Swal.close()
-  //     Swal.fire("Que mal :(","La ficha seleccionada no tiene movimientos posibles","error")
-  //     seleccionarFicha(null)
-  //   }
+  const moverFicha = useGameStore((state)=>state.moverFicha)
+  const fichaSeleccionada = useGameStore((state)=>state.fichaActual)
+  useEffect(() => {
+    if(movimientos.length == 0 && fichaSeleccionada){
+      Swal.close()
+      Swal.fire("Que mal :(","La ficha seleccionada no tiene movimientos posibles","error")
+    }
 
-  // }, [movimientos])
+  }, [movimientos])
+  const onMovClick = (n:number)=>{
+    moverFicha(n)
+  }
   return (
-    <div>
+    <div className={styles.movimientosPosibles}>
       {movimientos.map((el) => (
-        <div>{el}</div>
+        <div key={el} onClick={()=>onMovClick(el)}>{el}</div>
       ))}
     </div>
   );
@@ -180,7 +154,6 @@ const ModalJugadores = () => {
   //   return MySwal.fire(<p>Shorthand works too</p>)
   // })
 };
-const DisplayPlayers = () => {};
 const getHexColor = {
   Rojo: 'red',
   Morado: 'purple',

@@ -1,12 +1,13 @@
 import Swal from 'sweetalert2';
 import { v4 as uuidv4 } from 'uuid';
 import { Ficha } from './claseFicha';
-import { POSICIONES_GANADORAS, POSICIONES_SALIDA } from './constantes';
+import { POSICIONES_GANADORAS, POSICIONES_SALIDA, POSICION_META } from './constantes';
 
+type ColorFichas ='Rojo'| 'Amarillo'| 'Verde'| 'Azul'| 'Morado'| 'Naranja'
 class Jugador {
   dadoUno = null;
   dadoDos = null;
-  colorFicha = null;
+  colorFicha:ColorFichas = null;
   nombre = null;
   valorDado = null;
   numeroFichas = null;
@@ -18,19 +19,22 @@ class Jugador {
   cantidadPares = 0;
   fichas: Ficha[] = [];
   estadoSoplar = false;
-  constructor(nombre, numeroFichas, color, valorDado) {
+  index:number=null
+  constructor(nombre, numeroFichas, color, valorDado,index) {
     this.nombre = nombre;
     this.fichasEnjauladas = numeroFichas;
     this.numeroFichas = numeroFichas;
     this.colorFicha = color;
     this.valorDado = valorDado;
+    this.index=index
     // this.colorFicha=this.colores.random()
     this.asignarFichas();
   }
 
   asignarFichas() {
     for (let i = 0; i < this.numeroFichas; i++) {
-      let ficha = new Ficha(null, 'Carcel', this.nombre);
+      let ficha = new Ficha(-1, 'Carcel', this,i);
+      ficha.actualizarXYZ()
       this.fichas.push(ficha);
     }
   }
@@ -66,7 +70,7 @@ class Jugador {
       Swal.fire('Ganaste', 'Una ficha ha llegado a la meta', 'success');
       const fichaEncontrada = this.fichas.find((ficha) => ficha.posicion == POSICIONES_GANADORAS[this.colorFicha]);
       fichaEncontrada.estado="Gano"
-      fichaEncontrada.posicion = 102 // Representa el circulo de meta
+      fichaEncontrada.posicion = POSICION_META 
       return []
     }
 
@@ -106,6 +110,7 @@ class Jugador {
             this.fichas[j].estado = 'Libre';
 
             this.fichas[j].posicion = POSICIONES_SALIDA[this.colorFicha];
+            this.fichas[j].actualizarXYZ()
           }
         }
         Swal.close();

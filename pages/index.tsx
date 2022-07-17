@@ -3,7 +3,7 @@ import { useLoader } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { Suspense } from 'react';
 import { OrbitControls, PerspectiveCamera, PresentationControls } from '@react-three/drei';
-import Ficha from "../Ficha"
+import Ficha from "../src/components/Ficha"
 // Step 5 - delete Instructions components
 // import Shader from '@/components/canvas/Shader/Shader'
 
