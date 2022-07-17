@@ -1,10 +1,10 @@
-import Swal, { SweetAlertIcon } from 'sweetalert2';
+import Swal from 'sweetalert2';
 import create from 'zustand';
 import { Ficha } from './logic/claseFicha';
 import { Jugador } from './logic/claseJugador';
 import { Tablero } from './logic/claseTablero';
 import { POSICIONES_SALIDA, POSICION_CARCEL } from './logic/constantes';
-import { mostrarMovimiento, matarJugador } from './logic/funcionalidades';
+import { mostrarMovimiento } from './logic/funcionalidades';
 
 const defaultAccionesPosibles = {
   girarDados: true,
