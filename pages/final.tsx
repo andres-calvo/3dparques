@@ -7,6 +7,8 @@ import { OrbitControls } from '@react-three/drei';
 import { useLoader } from '@react-three/fiber';
 import { GLTFLoader } from 'three-stdlib';
 import Ficha from '../src/components/Ficha';
+import { useModalStore } from '@/modal-store';
+
 const Final = () => {
   const store = useGameStore();
   useEffect(() => {
@@ -38,30 +40,29 @@ const Scene = () => {
 Final.r3f = (props) => (
   <>
     <ambientLight />
-      <OrbitControls  maxDistance={2} minDistance={0.7} maxPolarAngle={Math.PI/2} />
-      <FichasRenderer />
-      <Scene />
+    <OrbitControls maxDistance={2} minDistance={0.7} maxPolarAngle={Math.PI / 2} />
+    <FichasRenderer />
+    <Scene />
   </>
 );
 
 const FichasRenderer = () => {
-  const { instanciaJuego,seleccionarFicha } = useGameStore();
+  const { instanciaJuego, seleccionarFicha } = useGameStore();
   const cantidadJugadores = instanciaJuego.jugadores;
 
   return (
     <>
       {cantidadJugadores.map((player) => {
-        console.log(player.colorFicha);
         return (
           <Fragment key={player.colorFicha}>
             {player.fichas.map((f, i) => (
               <Ficha
                 x={f.x}
-                y={f.z }
+                y={f.z}
                 z={f.y * -1} // Al exportar de blender la Y salio invertida
                 color={getHexColor[player.colorFicha]}
                 key={f.id}
-                onClick={()=>seleccionarFicha(f)}
+                onClick={() => seleccionarFicha(f)}
               />
             ))}
           </Fragment>
@@ -90,9 +91,16 @@ const Header = () => {
  */
 const Buttons = () => {
   const { pasarTurno, matarJugador, accionesPosibles, girarDados } = useGameStore();
+  const setModal = useModalStore((state) => state.setModal);
+  const mostrarSoplarJugador = () => {
+    setModal(true, SoplarModalContenido);
+  };
 
   return (
     <div className={styles.buttonsWrapper}>
+      <button onClick={mostrarSoplarJugador} disabled={!accionesPosibles.matar}>
+        Soplar Jugador
+      </button>
       <button onClick={matarJugador} disabled={!accionesPosibles.matar}>
         Matar Jugador
       </button>
@@ -106,29 +114,50 @@ const Buttons = () => {
   );
 };
 
+const SoplarModalContenido = () => {
+  const { soplarJugada } = useGameStore();
+  const instanciaJuego = useGameStore((state) => state.instanciaJuego);
+  const cantidadJugadores = instanciaJuego.jugadores;
+  return (
+    <>
+      {cantidadJugadores.map((player) => {
+        return (
+          <div className='box' key={player.nombre}>
+            <div onClick={() => soplarJugada(player.nombre)} style={{ cursor: 'pointer' }}>
+              <div>
+                <h2>{player.nombre}</h2>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </>
+  );
+};
+
 const MovimientosPosibles = () => {
   const movimientos = useGameStore((state) => state.movimientosPosibles);
-  const moverFicha = useGameStore((state)=>state.moverFicha)
-  const fichaSeleccionada = useGameStore((state)=>state.fichaActual)
+  const moverFicha = useGameStore((state) => state.moverFicha);
+  const fichaSeleccionada = useGameStore((state) => state.fichaActual);
   useEffect(() => {
-    if(movimientos.length == 0 && fichaSeleccionada){
-      Swal.close()
-      Swal.fire("Que mal :(","La ficha seleccionada no tiene movimientos posibles","error")
+    if (movimientos.length == 0 && fichaSeleccionada) {
+      Swal.close();
+      Swal.fire('Que mal :(', 'La ficha seleccionada no tiene movimientos posibles', 'error');
     }
-
-  }, [movimientos])
-  const onMovClick = (n:number)=>{
-    moverFicha(n)
-  }
+  }, [movimientos]);
+  const onMovClick = (n: number) => {
+    moverFicha(n);
+  };
   return (
     <div className={styles.movimientosPosibles}>
       {movimientos.map((el) => (
-        <div key={el} onClick={()=>onMovClick(el)}>{el}</div>
+        <div key={el} onClick={() => onMovClick(el)}>
+          {el}
+        </div>
       ))}
     </div>
   );
 };
-
 
 const getHexColor = {
   Rojo: 'red',

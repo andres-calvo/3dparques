@@ -81,3 +81,9 @@
     align-items: center;
   }
 }
+.box {
+  display: flex; /* or inline-flex */
+  
+  justify-content: space-evenly ;
+  
+}
