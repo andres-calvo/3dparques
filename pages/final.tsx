@@ -3,7 +3,6 @@ import React, { Fragment, Suspense, useEffect, useState } from 'react';
 import { Main } from '@/logic/pruebaJuego';
 import styles from '../styles/final.module.scss';
 import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
 import { OrbitControls } from '@react-three/drei';
 import { useLoader } from '@react-three/fiber';
 import { GLTFLoader } from 'three-stdlib';
@@ -130,30 +129,7 @@ const MovimientosPosibles = () => {
   );
 };
 
-const ModalJugadores = () => {
-  const instanciaJugador = useGameStore((state) => state.instanciaJugadorActual);
-  // const instanciaJuego = useGameStore((state) => state.instanciaJuego);
-  // const cantidadJugadores = instanciaJuego.jugadores;
-  const MySwal = withReactContent(Swal);
 
-  useEffect(() => {
-    setTimeout(() => {
-      Swal.close();
-      MySwal.fire({
-        title: <p>Hello World</p>,
-        didOpen: () => {
-          // `MySwal` is a subclass of `Swal` with all the same instance & static methods
-          // MySwal.showLoading()
-        },
-      });
-    }, 10000);
-  }, []);
-  return <></>;
-
-  // .then(() => {
-  //   return MySwal.fire(<p>Shorthand works too</p>)
-  // })
-};
 const getHexColor = {
   Rojo: 'red',
   Morado: 'purple',
