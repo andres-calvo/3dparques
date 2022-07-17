@@ -9,6 +9,7 @@ import { useLoader } from '@react-three/fiber';
 import { GLTFLoader } from 'three-stdlib';
 import Ficha from '../Ficha';
 import carcelJson from '../carcel.json';
+import { useModalStore } from '@/modal-store';
 
 const Final = () => {
   const store = useGameStore();
@@ -54,7 +55,7 @@ const FichasRenderer = () => {
     <>
       {cantidadJugadores.map((player) => {
         console.log(player)
-          const carcel = carcelJson[player.colorFicha];
+        const carcel = carcelJson[player.colorFicha];
 
         return (
           <>
@@ -154,29 +155,57 @@ const ModalJugadores = () => {
   const instanciaJugador = useGameStore((state) => state.instanciaJugadorActual);
   // const instanciaJuego = useGameStore((state) => state.instanciaJuego);
   // const cantidadJugadores = instanciaJuego.jugadores;
-  const MySwal = withReactContent(Swal)
 
 
+  return (<DisplayPlayers />)
 
-  useEffect(() => {
-    setTimeout(() => {
-      Swal.close();
-      MySwal.fire({
-        title: <p>Hello World</p>,
-        didOpen: () => {
-          // `MySwal` is a subclass of `Swal` with all the same instance & static methods
-          // MySwal.showLoading()
-        },
-      })
-    }, 10000);
-  }, []);
-  return (<></>)
-    
 
 
   // .then(() => {
   //   return MySwal.fire(<p>Shorthand works too</p>)
   // })
-  
+
 };
-const DisplayPlayers = ()=>{}
+const DisplayPlayers = () => {
+  const setModal = useModalStore((state) => state.setModal)
+
+  useEffect(() => {
+    setModal(true, Componente)
+  }, [])
+
+  return null
+
+}
+
+
+
+const Componente = () => {
+  const { soplarJugada } = useGameStore();
+  const instanciaJuego = useGameStore((state) => state.instanciaJuego);
+  const cantidadJugadores = instanciaJuego.jugadores;
+  return (
+    <>{
+      cantidadJugadores.map((player => {
+        return (
+          <div className="box" key={player.nombre}>
+            <div onClick={() => soplarJugada(player.nombre)} style={{cursor:"pointer"}}>
+              <div><h2>{player.nombre}</h2></div>
+            </div>
+          </div>
+        )
+      }
+      ))
+
+    }
+      
+    </>
+  )
+}
+
+
+
+
+
+
+
+

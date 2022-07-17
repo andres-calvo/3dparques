@@ -14,3 +14,46 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.modalWrapper{
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 150;
+  background-color: rgba(0, 0, 0, 0.4);
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu{
+  
+    position: fixed;
+    border: 5px solid #FFFF00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+    height: 50vh;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+    flex-direction: column
+}
+.modalContent{
+  display: flex;
+  flex-direction: column;
+  border-radius: 1rem;
+  padding: 1rem;
+  width: 30vw;
+  height: 40vh;
+  background:white
+}
+
+.box {
+  display: flex; /* or inline-flex */
+  
+  justify-content: space-evenly ;
+  
+}

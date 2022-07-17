@@ -58,3 +58,10 @@
   opacity: 1;
   pointer-events: auto;
 }
+
+.box {
+  display: flex; /* or inline-flex */
+  
+  justify-content: space-evenly ;
+  
+}

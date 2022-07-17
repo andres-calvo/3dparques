@@ -28,6 +28,9 @@ interface StoreInterface {
   pasarTurno: () => void;
   girarDados: () => void;
   matarJugador: () => void;
+  soplarJugada: (jugadorSoplado: Jugador) => void;
+
+
 }
 export const useGameStore = create<StoreInterface>((set, get) => ({
   dados: [],
