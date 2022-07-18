@@ -16,6 +16,8 @@ export default function Ficha({ ...props }) {
         geometry={nodes.Fichas.geometry}
         position={[props.x, props.y, props.z]}
         onClick={props.onClick}
+        onPointerOver={()=>document.body.style.cursor = "pointer"}
+        onPointerOut={()=>document.body.style.cursor = "default"}
       >
         <meshStandardMaterial color={props.color} />
       </mesh>

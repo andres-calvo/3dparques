@@ -6,6 +6,7 @@ import Dom from '@/components/layout/dom';
 import dynamic from 'next/dynamic';
 import "../styles/globals.css"
 import { useModalStore } from '@/modal-store';
+import "@fontsource/roboto"; 
 const LCanvas = dynamic(() => import('@/components/layout/canvas'), {
   ssr: false,
 });

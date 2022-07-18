@@ -10,9 +10,11 @@ import Ficha from '../src/components/Ficha';
 import { useModalStore } from '@/modal-store';
 
 const Final = () => {
-  const store = useGameStore();
+  const setInstanciaJuego = useGameStore((state) => state.setInstanciaJuego);
   useEffect(() => {
-    store.setInstanciaJuego(Main(4, 3));
+    const numeroJugadores = parseInt(localStorage.getItem('numeroJugadores'));
+    const numeroFichas = parseInt(localStorage.getItem('numeroFichas'));
+    setInstanciaJuego(Main(numeroJugadores, numeroFichas));
     Swal.close();
     Swal.fire(
       'Bienvenido al juego',
@@ -25,7 +27,6 @@ const Final = () => {
       <Header />
       <MovimientosPosibles />
       <Buttons />
-      {/* <ModalJugadores /> */}
     </div>
   );
 };
@@ -47,7 +48,8 @@ Final.r3f = (props) => (
 );
 
 const FichasRenderer = () => {
-  const { instanciaJuego, seleccionarFicha } = useGameStore();
+  const seleccionarFicha = useGameStore((state)=>state.seleccionarFicha)
+  const instanciaJuego = useGameStore((state)=>state.instanciaJuego)
   const cantidadJugadores = instanciaJuego.jugadores;
 
   return (
@@ -123,7 +125,7 @@ const SoplarModalContenido = () => {
       {cantidadJugadores.map((player) => {
         return (
           <div className='box' key={player.nombre}>
-            <div onClick={() => soplarJugada(player.nombre)} style={{ cursor: 'pointer' }}>
+            <div onClick={() => soplarJugada(player)} style={{ cursor: 'pointer' }}>
               <div>
                 <h2>{player.nombre}</h2>
               </div>

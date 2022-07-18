@@ -3,7 +3,7 @@ import create from 'zustand';
 import { Ficha } from './logic/claseFicha';
 import { Jugador } from './logic/claseJugador';
 import { Tablero } from './logic/claseTablero';
-import { POSICIONES_SALIDA, POSICION_CARCEL } from './logic/constantes';
+import { POSICIONES_SALIDA, POSICION_CARCEL, POSICION_META } from './logic/constantes';
 import { mostrarMovimiento } from './logic/funcionalidades';
 
 const defaultAccionesPosibles = {
@@ -53,21 +53,21 @@ export const useGameStore = create<StoreInterface>((set, get) => ({
 
     jugadoresPosibles.forEach((currentPlayer) => {
       currentPlayer.fichas.forEach((ficha) => {
-        const estaEnSuSalida =POSICIONES_SALIDA[ficha.jugador.colorFicha] == ficha.posicion
+        const estaEnSuSalida = POSICIONES_SALIDA[ficha.jugador.colorFicha] == ficha.posicion;
         if (posicionesKiller.includes(ficha.posicion) && !estaEnSuSalida) {
           //Valido si el jugador en la posicion i tiene alguna ficha en la una misma posicion de alguna ficha del jugador que quiere matar
           ficha.estado = 'Carcel'; //Si existe alguna, luego esa ficha se convierte en el estado de "Carcel" es decir la mata
           banderaError = false;
-          ficha.posicion = POSICION_CARCEL
-          ficha.actualizarXYZ()
+          ficha.posicion = POSICION_CARCEL;
+          ficha.actualizarXYZ();
         }
       });
     });
     if (banderaError) {
       Swal.close();
       Swal.fire(
-        'No sea imbecil y juegue bien',
-        'No puede matar a nadie , se le pasa turno por pendejo',
+        'Error',
+        'No puede matar a nadie , ha perdido su turno',
         'error'
       );
       get().pasarTurno();
@@ -134,9 +134,9 @@ export const useGameStore = create<StoreInterface>((set, get) => ({
   moverFicha: (mov) => {
     const { dados, fichaActual, setMovimientosPosibles, instanciaJugadorActual, setAccionPosible } =
       get();
-    fichaActual.posicion += mov;
+    fichaActual.posicion = (fichaActual.posicion + mov) % POSICION_META;
     fichaActual.actualizarXYZ();
-    const anteriorDadosFueronPar = dados[0].valor == dados[1].valor
+    const anteriorDadosFueronPar = dados[0].valor == dados[1].valor;
 
     set({ fichaActual: null });
     if (mov === dados[2].valor) {
@@ -161,11 +161,10 @@ export const useGameStore = create<StoreInterface>((set, get) => ({
     const movimientosPosiblesFichas = instanciaJugadorActual.fichas.map((ficha) =>
       mostrarMovimiento(ficha, [newDados[0].valor, newDados[1].valor, newDados[2].valor])
     );
-    if (movimientosPosiblesFichas.flat().length == 0 ) {
+    if (movimientosPosiblesFichas.flat().length == 0) {
       setAccionPosible('pasarDeTurno', !anteriorDadosFueronPar);
-      setAccionPosible("girarDados",anteriorDadosFueronPar)
+      setAccionPosible('girarDados', anteriorDadosFueronPar);
     }
-    
   },
   setAccionPosible: (accion, state) => {
     set((prev) => ({ ...prev, accionesPosibles: { ...prev.accionesPosibles, [accion]: state } }));
@@ -196,10 +195,19 @@ export const useGameStore = create<StoreInterface>((set, get) => ({
       setAccionPosible('pasarDeTurno', false);
       if (jugada.length == 0) {
         pasarTurno();
+        Swal.close();
+        Swal.fire('No tuviste suerte', 'Intenta en la siguiente ronda', 'warning');
         return;
       }
-      //Validacion de pares
+
       const [dado1, dado2, dado3] = jugada;
+      Swal.close();
+      Swal.fire(
+        'Has tenido suerte',
+        `Tu dados son ${dado1.valor} y ${dado2.valor} . Selecciona una de tus ficha para averiguar sus movimientos posibles`,
+        'success'
+      );
+      //Validacion de pares
       const isPar = dado1.valor == dado2.valor;
       if (isPar) {
         instanciaJugador.cantidadPares = instanciaJugador.cantidadPares + 1;
@@ -242,7 +250,13 @@ function onIsPar(instanciaJugador: Jugador) {
     ganoUnaFicha = fichaEncontrada != null;
     if (fichaEncontrada) {
       fichaEncontrada.estado = 'Gano';
-      fichaEncontrada.posicion = 102;
+      fichaEncontrada.posicion = POSICION_META;
+      Swal.close();
+      Swal.fire(
+        'Felicidades',
+        'Una de tu fichas ha llegado a la meta.',
+        'success'
+      );
     }
   }
   return ganoUnaFicha;

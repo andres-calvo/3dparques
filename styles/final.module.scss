@@ -29,6 +29,20 @@
   button {
     border-radius: 1rem;
     padding: 1rem;
+    border: none;
+    cursor: pointer;
+  }
+  button:nth-child(1){
+    background-color: lightblue;
+  }
+  button:nth-child(2){
+    background-color: lightcoral;
+  }
+  button:nth-child(3){
+    background-color: lightgreen;
+  }
+  button:nth-child(4){
+    background-color: lightblue;
   }
 }
 
@@ -62,7 +76,7 @@
 .movimientosPosibles {
   display: flex;
   position: fixed;
-  width: 70vw;
+  width: 50vw;
   height: 6rem;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.3);

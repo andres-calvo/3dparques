@@ -3,14 +3,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { Ficha } from './claseFicha';
 import { POSICIONES_GANADORAS, POSICIONES_SALIDA, POSICION_META } from './constantes';
 
-type ColorFichas ='Rojo'| 'Amarillo'| 'Verde'| 'Azul'| 'Morado'| 'Naranja'
+type ColorFichas = 'Rojo' | 'Amarillo' | 'Verde' | 'Azul' | 'Morado' | 'Naranja';
 class Jugador {
   dadoUno = null;
   dadoDos = null;
-  colorFicha:ColorFichas = null;
-  nombre = null;
-  valorDado = null;
-  numeroFichas = null;
+  colorFicha: ColorFichas = null;
+  nombre: string = null;
+  numeroFichas = 0;
   fichasLibres = 0;
   fichasEnjauladas = 0;
   puedeJugar = false;
@@ -19,22 +18,20 @@ class Jugador {
   cantidadPares = 0;
   fichas: Ficha[] = [];
   estadoSoplar = false;
-  index:number=null
-  constructor(nombre, numeroFichas, color, valorDado,index) {
+  index: number = null;
+  constructor(nombre, numeroFichas, color, index) {
     this.nombre = nombre;
     this.fichasEnjauladas = numeroFichas;
     this.numeroFichas = numeroFichas;
     this.colorFicha = color;
-    this.valorDado = valorDado;
-    this.index=index
-    // this.colorFicha=this.colores.random()
+    this.index = index;
     this.asignarFichas();
   }
 
   asignarFichas() {
     for (let i = 0; i < this.numeroFichas; i++) {
-      let ficha = new Ficha(-1, 'Carcel', this,i);
-      ficha.actualizarXYZ()
+      let ficha = new Ficha(-1, 'Carcel', this, i);
+      ficha.actualizarXYZ();
       this.fichas.push(ficha);
     }
   }
@@ -47,14 +44,13 @@ class Jugador {
   girarDados(): Array<{ id: string; valor: number }> {
     this.dadoUno = Math.floor(Math.random() * (6 - 1) + 1);
     this.dadoDos = Math.floor(Math.random() * (6 - 1) + 1);
-    // this.ronda = this.ronda + 1;
- 
+    
     if (this.dadoUno == this.dadoDos) {
       for (let i = 0; i < this.fichas.length; i++) {
         if (this.fichas[i].estado == 'Carcel') {
           this.fichas[i].estado = 'Libre';
           this.fichas[i].posicion = POSICIONES_SALIDA[this.colorFicha];
-
+          this.fichas[i].actualizarXYZ();
           break;
         }
       }
@@ -68,10 +64,13 @@ class Jugador {
     if (posiciones.includes(POSICIONES_GANADORAS[this.colorFicha]) && valor3 == 8) {
       Swal.close();
       Swal.fire('Ganaste', 'Una ficha ha llegado a la meta', 'success');
-      const fichaEncontrada = this.fichas.find((ficha) => ficha.posicion == POSICIONES_GANADORAS[this.colorFicha]);
-      fichaEncontrada.estado="Gano"
-      fichaEncontrada.posicion = POSICION_META 
-      return []
+      const fichaEncontrada = this.fichas.find(
+        (ficha) => ficha.posicion == POSICIONES_GANADORAS[this.colorFicha]
+      );
+      fichaEncontrada.estado = 'Gano';
+      fichaEncontrada.posicion = POSICION_META;
+      //Añadir coordenadas de meta
+      return [];
     }
 
     if (
@@ -91,30 +90,28 @@ class Jugador {
   }
 
   sacarFichas() {
-    
     this.ronda = this.ronda + 1;
     let i = 0;
     while (i < 3) {
       this.dadoUno = Math.floor(Math.random() * (6 - 1) + 1);
       this.dadoDos = Math.floor(Math.random() * (6 - 1) + 1);
-      console.log(this.dadoUno);
-      console.log(this.dadoDos);
       if (this.dadoUno === this.dadoDos) {
-        
         this.puedeJugar = true;
-        // this.ronda = this.ronda + 1;
         this.fichasLibres = this.numeroFichas;
         this.fichasEnjauladas = 0;
-        for (let j = 0; j < this.fichas.length; j++) {
-          if (this.fichas[j].estado == 'Carcel') {
-            this.fichas[j].estado = 'Libre';
-
-            this.fichas[j].posicion = POSICIONES_SALIDA[this.colorFicha];
-            this.fichas[j].actualizarXYZ()
+        this.fichas.forEach((ficha) => {
+          if (ficha.estado == 'Carcel') {
+            ficha.estado = 'Libre';
+            ficha.posicion = POSICIONES_SALIDA[this.colorFicha];
+            ficha.actualizarXYZ();
           }
-        }
+        });
         Swal.close();
-        Swal.fire('Has tenido suerte', 'Tus fichas han salido de la carcel, ahora es el turno del siguiente jugador', 'success');
+        Swal.fire(
+          'Has tenido suerte',
+          'Tus fichas han salido de la carcel, ahora es el turno del siguiente jugador',
+          'success'
+        );
         break;
       }
 
@@ -123,14 +120,6 @@ class Jugador {
         Swal.fire('No tuviste suerte', 'Intenta en la siguiente ronda', 'warning');
       }
       i = i + 1;
-    }
-  }
-
-  jugar() {
-    if (this.puedeJugar == false) {
-      this.sacarFichas();
-    } else {
-      this.girarDados();
     }
   }
 }
