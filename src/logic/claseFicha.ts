@@ -4,15 +4,8 @@ import meta from "../../public/meta.json"
 import carcel from '../../public/carcel.json';
 import posiciones from '../../public/posiciones.json';
 import { POSICION_CARCEL, POSICION_META } from './constantes';
-import { EstadoFichas } from '@/types';
-type Coordinate = { x: number; y: number; z: number };
-interface ICarcel {
-  [x: string]: Coordinate[];
-}
-interface IMeta extends ICarcel{}
-interface IPosiciones {
-  [x: number]: Coordinate[];
-}
+import { EstadoFichas, ICarcel, IMeta, IPosiciones } from '@/types';
+
 let metaJSON:IMeta = meta
 let carcelJSON: ICarcel = carcel;
 let posicionesJSON: IPosiciones = posiciones;

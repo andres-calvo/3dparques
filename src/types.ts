@@ -35,3 +35,12 @@ export interface StoreInterface {
 
 export type ColorFichas = 'Rojo' | 'Amarillo' | 'Verde' | 'Azul' | 'Morado' | 'Naranja';
 export type EstadoFichas = 'Libre' | 'Carcel' | 'Gano';
+
+export type Coordinate = { x: number; y: number; z: number };
+export interface ICarcel {
+  [x: string]: Coordinate[];
+}
+export interface IMeta extends ICarcel{}
+export interface IPosiciones {
+  [x: number]: Coordinate[];
+}
