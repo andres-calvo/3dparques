@@ -1,10 +1,10 @@
 import { POSICIONES_ESPECIALES, POSICION_META } from './constantes';
 
-export function mostrarMovimiento(ficha, valores) {
-  let dados = [5, 7, 10, 12];
+export function mostrarMovimiento(ficha, valores) { //  PUTO
+  let dados = [5, 7, 10, 12]; 
   let movimientosPosibles = [];
   if (
-    POSICIONES_ESPECIALES.includes((ficha.posicion + valores[0]) % POSICION_META) &&
+    POSICIONES_ESPECIALES.includes((ficha.posicion + valores[0]) % POSICION_META) && 
     dados.includes(valores[0])
   ) {
     movimientosPosibles.push(valores[0]);

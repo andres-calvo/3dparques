@@ -13,6 +13,15 @@ interface IPosiciones {
 }
 let carcelJSON: ICarcel = carcel;
 let posicionesJSON: IPosiciones = posiciones;
+
+/**
+ Se define una clase Ficha la cual contiene la posicion (en este caso 3D se usará x,y,z), su estado , posición y el id de la ficha.
+El método "actualizarXYZ" se encarga de dos cosas:
+
+1) En caso de que la ficha haya sido encarcelada por otro jugador, se le asignará la posición para x,z,y de carcel, teniendo en cuenta el color
+2) Si la ficha se va a mover de posición, se actuliza sus posiciones x,y,z y nada másS
+
+ */
 class Ficha {
   posicion:number = -1;
   estado:EstadoFichas = null;
@@ -22,7 +31,7 @@ class Ficha {
   y:number = null;
   z:number = null;
   index:number = null
-  constructor(posicion:number, estado:EstadoFichas, jugador: Jugador,index:number) {
+  constructor(posicion:number, estado:EstadoFichas, jugador: Jugador,index:number) { // Constructor para crear el objeto ficha
     this.posicion = posicion;
     this.estado = estado;
     this.jugador = jugador;
@@ -30,10 +39,10 @@ class Ficha {
     this.index = index
   }
   actualizarXYZ() {
-    if (this.posicion == POSICION_CARCEL) {
+    if (this.posicion == POSICION_CARCEL) { //Validar si la ficha se encuentra en la posición de carcel
       //Obtener las posiciones de carcel para ese color
-      const posicionCarcel = carcelJSON[this.jugador.colorFicha][this.index];
-      this.x = posicionCarcel.x;
+      const posicionCarcel = carcelJSON[this.jugador.colorFicha][this.index]; //Obtengo las posiciones x,y,z de carcel para esa ficha y dicho color
+      this.x = posicionCarcel.x; // Se asignan valores x,y,z para esa ficha 
       this.y = posicionCarcel.y;
       this.z = posicionCarcel.z;
       return;
