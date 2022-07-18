@@ -49,8 +49,7 @@ Juego.r3f = (props) => (
 );
 
 const FichasRenderer = () => {
-  const seleccionarFicha = useGameStore((state)=>state.seleccionarFicha)
-  const instanciaJuego = useGameStore((state)=>state.instanciaJuego)
+  const { seleccionarFicha, instanciaJuego } = useGameStore();
   const cantidadJugadores = instanciaJuego.jugadores;
 
   return (
@@ -161,5 +160,3 @@ const MovimientosPosibles = () => {
     </div>
   );
 };
-
-

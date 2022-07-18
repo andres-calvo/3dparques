@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Jugador } from './claseJugador';
-import meta from "../../public/meta.json"
-import carcel from '../../public/carcel.json';
-import posiciones from '../../public/posiciones.json';
+import meta from "../../meta.json"
+import carcel from '../../carcel.json';
+import posiciones from '../../posiciones.json';
 import { POSICION_CARCEL, POSICION_META } from './constantes';
 import { EstadoFichas, ICarcel, IMeta, IPosiciones } from '@/types';
 
