@@ -1,16 +1,19 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Jugador } from './claseJugador';
+import meta from "../../public/meta.json"
 import carcel from '../../public/carcel.json';
 import posiciones from '../../public/posiciones.json';
-import { POSICION_CARCEL } from './constantes';
+import { POSICION_CARCEL, POSICION_META } from './constantes';
 import { EstadoFichas } from '@/types';
 type Coordinate = { x: number; y: number; z: number };
 interface ICarcel {
   [x: string]: Coordinate[];
 }
+interface IMeta extends ICarcel{}
 interface IPosiciones {
   [x: number]: Coordinate[];
 }
+let metaJSON:IMeta = meta
 let carcelJSON: ICarcel = carcel;
 let posicionesJSON: IPosiciones = posiciones;
 
@@ -46,6 +49,13 @@ class Ficha {
       this.y = posicionCarcel.y;
       this.z = posicionCarcel.z;
       return;
+    }
+    if(this.posicion == POSICION_META){
+      const posicionMeta =metaJSON[this.jugador.colorFicha][this.index];
+      this.x = posicionMeta.x;
+      this.y = posicionMeta.y;
+      this.z = posicionMeta.z;
+      return
     }
     const casilla = posicionesJSON[this.posicion][this.jugador.index];
     for (const ficha of this.jugador.fichas) {

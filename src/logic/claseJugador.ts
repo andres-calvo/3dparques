@@ -69,7 +69,7 @@ class Jugador {
       );
       fichaEncontrada.estado = 'Gano'; //En caso que haya entrado al if, es decir que haya cumplido la condicion anterior, actuaizo el estado de la ficha como "Gano"
       fichaEncontrada.posicion = POSICION_META; // Ubico la ficha en la posición de meta
-      //Añadir coordenadas de meta
+      fichaEncontrada.actualizarXYZ()
       return [];
     }
 
