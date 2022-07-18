@@ -22,3 +22,11 @@ export const POSICIONES_ESPECIALES = [
 export const POSICION_CARCEL = -1;
 export const POSICION_META = 102;
 export const COLORES = ['Rojo', 'Amarillo', 'Verde', 'Azul', 'Morado', 'Naranja'];
+export const getHexColor = {
+  Rojo: 'red',
+  Morado: 'purple',
+  Amarillo: 'yellow',
+  Verde: 'green',
+  Azul: 'blue',
+  Naranja: 'orange',
+};

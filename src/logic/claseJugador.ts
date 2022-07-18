@@ -1,9 +1,9 @@
+import { ColorFichas } from '@/types';
 import Swal from 'sweetalert2';
 import { v4 as uuidv4 } from 'uuid';
 import { Ficha } from './claseFicha';
 import { POSICIONES_GANADORAS, POSICIONES_SALIDA, POSICION_META } from './constantes';
 
-type ColorFichas = 'Rojo' | 'Amarillo' | 'Verde' | 'Azul' | 'Morado' | 'Naranja';
 class Jugador {
   dadoUno = null;
   dadoDos = null;

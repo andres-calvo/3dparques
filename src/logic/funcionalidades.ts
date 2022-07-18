@@ -1,6 +1,12 @@
 import { POSICIONES_ESPECIALES, POSICION_META } from './constantes';
-
-export function mostrarMovimiento(ficha, valores) { //  PUTO
+/**
+ * Se pasa una ficha actual y se calcula sus movimientos posibles en base
+ * a los dados que saco el jugador. Teniendo en cuenta las restricciones del juego
+ * @param ficha 
+ * @param valores 
+ * @returns 
+ */
+export function mostrarMovimiento(ficha, valores) { 
   let dados = [5, 7, 10, 12]; 
   let movimientosPosibles = [];
   if (

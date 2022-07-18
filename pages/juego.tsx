@@ -1,5 +1,5 @@
 import { useGameStore } from '@/store';
-import React, { Fragment, Suspense, useEffect, useState } from 'react';
+import React, { Fragment, Suspense, useEffect } from 'react';
 import { Main } from '@/logic/pruebaJuego';
 import styles from '../styles/final.module.scss';
 import Swal from 'sweetalert2';
@@ -8,8 +8,9 @@ import { useLoader } from '@react-three/fiber';
 import { GLTFLoader } from 'three-stdlib';
 import Ficha from '../src/components/Ficha';
 import { useModalStore } from '@/modal-store';
+import { getHexColor } from '@/logic/constantes';
 
-const Final = () => {
+const Juego = () => {
   const setInstanciaJuego = useGameStore((state) => state.setInstanciaJuego);
   useEffect(() => {
     const numeroJugadores = parseInt(localStorage.getItem('numeroJugadores'));
@@ -38,7 +39,7 @@ const Scene = () => {
     </Suspense>
   );
 };
-Final.r3f = (props) => (
+Juego.r3f = (props) => (
   <>
     <ambientLight />
     <OrbitControls maxDistance={2} minDistance={0.7} maxPolarAngle={Math.PI / 2} />
@@ -61,7 +62,7 @@ const FichasRenderer = () => {
               <Ficha
                 x={f.x}
                 y={f.z}
-                z={f.y * -1} // Al exportar de blender la Y salio invertida
+                z={f.y * -1} // Al exportar de Blender la Y salio invertida
                 color={getHexColor[player.colorFicha]}
                 key={f.id}
                 onClick={() => seleccionarFicha(f)}
@@ -74,7 +75,7 @@ const FichasRenderer = () => {
   );
 };
 
-export default Final;
+export default Juego;
 
 const Header = () => {
   const instanciaJugador = useGameStore((state) => state.instanciaJugadorActual);
@@ -161,11 +162,4 @@ const MovimientosPosibles = () => {
   );
 };
 
-const getHexColor = {
-  Rojo: 'red',
-  Morado: 'purple',
-  Amarillo: 'yellow',
-  Verde: 'green',
-  Azul: 'blue',
-  Naranja: 'orange',
-};
+

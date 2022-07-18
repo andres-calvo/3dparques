@@ -1,37 +1,11 @@
 import Swal from 'sweetalert2';
 import create from 'zustand';
-import { Ficha } from './logic/claseFicha';
 import { Jugador } from './logic/claseJugador';
-import { Tablero } from './logic/claseTablero';
 import { POSICIONES_SALIDA, POSICION_CARCEL, POSICION_META } from './logic/constantes';
 import { mostrarMovimiento } from './logic/funcionalidades';
+import { defaultAccionesPosibles, StoreInterface } from './types';
 
-const defaultAccionesPosibles = {
-  girarDados: true,
-  soplar: true,
-  matar: true,
-  pasarDeTurno: false,
-};
 
-interface StoreInterface {
-  dados: Array<{ id: string; valor: number }>;
-  instanciaJuego: Tablero;
-  instanciaJugadorActual: Jugador;
-  jugadorActual: number;
-  fichaActual: Ficha;
-  movimientosPosibles: number[];
-  accionesPosibles: typeof defaultAccionesPosibles;
-  setAccionPosible: (accion: keyof typeof defaultAccionesPosibles, state: boolean) => void;
-  siguienteTurno: () => void;
-  setMovimientosPosibles: (ficha: Ficha) => void;
-  setInstanciaJuego: (instanciaJuego: Tablero) => void;
-  seleccionarFicha: (ficha: Ficha) => void;
-  pasarTurno: () => void;
-  girarDados: () => void;
-  matarJugador: () => void;
-  moverFicha: (mov: number) => void;
-  soplarJugada: (jugadorSoplado: Jugador) => void;
-}
 export const useGameStore = create<StoreInterface>((set, get) => ({
   dados: [],
   instanciaJuego: null,
